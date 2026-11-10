@@ -22,7 +22,7 @@
   /* ---------------- pantalla de ingreso ---------------- */
   var CSS = '#kh-gate{position:fixed;inset:0;z-index:200;background:var(--bg,#EEF0F3);color:var(--ink,#18202D);display:flex;align-items:center;justify-content:center;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));overflow:auto}' +
     '#kh-gate .box{width:100%;max-width:380px;background:var(--surface,#fff);border:1px solid var(--line,#D8DCE3);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px}' +
-    '#kh-gate .kh-logo{width:56px;height:56px;border-radius:14px}' +
+    '#kh-gate .kh-word{width:190px;height:35px;margin:4px 0 6px;background:var(--brand,#1F3D2B);-webkit-mask:url(icons/logo-kehana.png) left center/contain no-repeat;mask:url(icons/logo-kehana.png) left center/contain no-repeat}' +
     '#kh-gate h1{font:700 26px var(--f-display,system-ui);letter-spacing:.28em;margin:0}' +
     '#kh-gate p{margin:0;color:var(--muted,#5A6373);font-size:14px;line-height:1.45}' +
     '#kh-gate label{font-size:13px;font-weight:500;display:flex;flex-direction:column;gap:4px}' +
@@ -38,7 +38,7 @@
       g = document.createElement('div'); g.id = 'kh-gate'; g.setAttribute('role', 'dialog'); g.setAttribute('aria-modal', 'true');
       document.body.appendChild(g);
     }
-    g.innerHTML = '<div class="box"><img class="kh-logo" src="icons/icon-192.png" alt=""><h1>KEHANA</h1>' + html + '</div>';
+    g.innerHTML = '<div class="box"><div class="kh-word" role="img" aria-label="KEHANA"></div>' + html + '</div>';
     return g;
   }
   function cerrarGate() { var g = document.getElementById('kh-gate'); if (g) g.remove(); }

@@ -1,8 +1,8 @@
 /* KEHANA · service worker: permite instalar la app y abrirla rápido.
    Los datos NO se guardan acá: siempre van y vienen de Supabase. */
-const VERSION = 'kehana-v1';
+const VERSION = 'kehana-v2';
 const SHELL = ['./', './index.html', './config.js', './platform.js', './manifest.webmanifest',
-  './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon-48.png'];
+  './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon-48.png', './icons/logo-kehana.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });
