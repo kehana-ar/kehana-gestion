@@ -86,3 +86,10 @@ QUÉ CAMBIA RESPECTO DE LA HERRAMIENTA EN CLAUDE
 - La lectura automática de remitos con Claude no está: la foto se adjunta y
   los datos se completan a mano.
 - Necesita internet para guardar. Sin conexión abre, pero no guarda.
+
+ACTUALIZACIONES
+   La app está en https://kehana-gestion.netlify.app
+   Claude tiene acceso a este repositorio (app de Claude instalada en
+   kehana-ar, solo para kehana-gestion), así que puede subir cambios
+   directamente. Netlify publica cada cambio en unos segundos; en el
+   teléfono la versión nueva aparece al cerrar y abrir la app.
