@@ -133,9 +133,20 @@
       })
       .subscribe(function (status) { if (status === 'SUBSCRIBED' && cargado) cargarTodo().catch(function () { }); });
   }
-  document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'visible' && cargado && Date.now() - ultimaCarga > 20000) cargarTodo().catch(function () { });
-  });
+  /* Refresco de respaldo: al volver a la app, al recuperar internet y cada 30 s mientras está abierta.
+     Así los datos se ponen al día aunque la sincronización en vivo se corte (pasa en iPhone al bloquear la pantalla). */
+  var refrescando = false;
+  function refrescar(minimo) {
+    if (refrescando || !sb || ultimaCarga === 0 && !fallo) return;
+    if (Date.now() - ultimaCarga < (minimo || 0)) return;
+    refrescando = true;
+    cargarTodo().catch(function () { }).then(function () { refrescando = false; });
+  }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') refrescar(3000); });
+  window.addEventListener('pageshow', function () { refrescar(3000); });
+  window.addEventListener('focus', function () { refrescar(3000); });
+  window.addEventListener('online', function () { refrescar(0); });
+  setInterval(function () { if (document.visibilityState === 'visible') refrescar(25000); }, 30000);
 
   function docRef(c, id) {
     var path = k(c, id);

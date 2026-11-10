@@ -1208,7 +1208,7 @@ renderAll();
   if(!DB){dbState='sin-db';refreshSave();renderAll();return;}
   dbState='cargando';refreshSave();
   const cols=Object.keys(S);
-  const done=k=>{loaded.add(k);if(loaded.size===cols.length+1&&dbState==='cargando')dbState='ok';renderAll();};
+  const done=k=>{loaded.add(k);if(loaded.size===cols.length+1&&(dbState==='cargando'||dbState==='error'))dbState='ok';renderAll();};
   const fail=()=>{dbState='error';renderAll();};
   for(const c of cols)DB.collection(c).onSnapshot(s=>{S[c]=s.docs.map(d=>Object.assign({id:d.id},d.data()));if(c==='asistencia')limpiarLocal();done(c);},fail);
   DB.doc('config/general').onSnapshot(s=>{const d=s.exists?s.data():{};CFG=Object.assign(JSON.parse(JSON.stringify(CFG0)),JSON.parse(JSON.stringify(d||{})));done('config');},fail);
