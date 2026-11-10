@@ -1,0 +1,88 @@
+KEHANA · App de gestión
+=======================
+
+Qué hay en esta carpeta
+- index.html, platform.js, sw.js, manifest.webmanifest, icons/  → la app
+- config.js     → acá van los 2 datos de tu proyecto de Supabase (paso 3.5)
+- supabase.sql  → crea la base de datos (paso 3.2)
+- _headers      → ajustes para publicarla en Netlify
+
+Usás una sola cuenta de GitHub; con ella entrás a Supabase y a Netlify.
+Hacelo desde una computadora; la primera vez lleva unos 30 minutos.
+
+
+1) DESCOMPRIMIR
+   Descomprimí el .zip. Te queda la carpeta "kehana-app".
+
+
+2) GITHUB (guarda el código)
+   2.1  github.com → botón "+" arriba a la derecha → "New repository".
+   2.2  Nombre: kehana-gestion · marcá "Private" · "Create repository".
+   2.3  En la página nueva, tocá el enlace "uploading an existing file".
+   2.4  Arrastrá TODO el contenido de la carpeta kehana-app (los archivos y la
+        carpeta icons) a la ventana → "Commit changes".
+
+
+3) SUPABASE (base de datos e inicio de sesión)
+   3.1  supabase.com → "New project". Nombre: kehana. Región: South America
+        (São Paulo). Guardá la contraseña de la base en un lugar seguro.
+   3.2  Cuando termine de crearse: menú "SQL Editor" → "New query" → pegá todo
+        el contenido de supabase.sql → "Run". Tiene que decir "Success".
+   3.3  Menú "Authentication" → "Users" → "Add user" → "Create new user".
+        Poné tu mail y una contraseña, y dejá tildado "Auto Confirm User".
+        Después volvé a "SQL Editor", pegá esta línea con TU mail y "Run":
+
+        insert into public.miembros (user_id, nombre)
+        select id, 'Kevin' from auth.users where email = 'TU_MAIL';
+
+   3.4  "Authentication" → "Sign In / Providers" (o "Settings") → apagá
+        "Allow new users to sign up". Así nadie más puede crearse un usuario.
+   3.5  "Project Settings" → "API" (o "Data API" / "API Keys"). Copiá:
+          - Project URL           (empieza con https://…supabase.co)
+          - anon public key       (o "publishable key")
+        En GitHub abrí config.js → ícono del lápiz → reemplazá
+        PEGAR_AQUI_LA_PROJECT_URL y PEGAR_AQUI_LA_ANON_KEY por esos valores
+        (entre las comillas) → "Commit changes".
+        Nunca uses la "service_role" / "secret key".
+
+
+4) NETLIFY (publica la app)
+   4.1  netlify.com → "Sign up" / "Log in" con GitHub.
+   4.2  "Add new project" → "Import an existing project" → GitHub →
+        elegí kehana-ar/kehana-gestion.
+   4.3  Build command: vacío · Publish directory: vacío (o un punto ".")
+        → "Deploy".
+   4.4  Te da una dirección como https://kehana-gestion.netlify.app
+        Cada vez que cambies algo en GitHub, Netlify la actualiza solo.
+
+
+5) PASAR TUS DATOS
+   5.1  Abrí la dirección de Netlify en la computadora y entrá con tu mail y
+        contraseña (los del paso 3.3).
+   5.2  Ajustes → "Importar respaldo" → elegí kehana-respaldo-2026-11-09.json
+        → "Importar".
+        Si cargaste algo nuevo en la herramienta vieja después del 09/11/2026,
+        exportá antes un respaldo nuevo desde ahí (Ajustes → "Respaldo
+        completo") e importá ese.
+   5.3  Desde ese momento usá solo la app nueva, para no tener datos en dos
+        lugares.
+
+
+6) INSTALAR EN EL TELÉFONO
+   iPhone:  abrí la dirección en Safari → botón compartir →
+            "Agregar a pantalla de inicio".
+   Android: abrí la dirección en Chrome → menú ⋮ → "Instalar app"
+            (o "Agregar a la pantalla principal").
+   Entrás una sola vez con tu mail y contraseña; después abre directo.
+
+
+SUMAR A UNA EMPLEADA (opcional)
+   Repetí el paso 3.3 con el mail de ella (cambiando 'Kevin' por su nombre).
+   Va a ver y cargar todo lo mismo que vos.
+
+
+QUÉ CAMBIA RESPECTO DE LA HERRAMIENTA EN CLAUDE
+- Los datos quedan en tu propia base de Supabase, con tu usuario y contraseña.
+- La lectura automática de remitos con Claude no está: la foto se adjunta y
+  los datos se completan a mano.
+- Necesita internet para guardar. Sin conexión abre, pero no guarda.
