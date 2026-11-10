@@ -334,6 +334,15 @@ table.board{border-collapse:separate;border-spacing:0;font-size:12.5px}
 .calc-out .wide{grid-column:1/-1}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:90;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px;font-size:13.5px;max-width:calc(100% - 32px)}
 @media (min-width:900px){.toast{bottom:28px}}
+/* sello «Powered by Netlify» (plan gratis): se deja lugar para que no tape la barra ni los botones */
+body.con-sello nav.bot{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 62px)}
+body.con-sello .wrap{padding-bottom:190px}
+@media (min-width:900px){body.con-sello .wrap{padding-bottom:96px}}
+body.con-sello .rail{padding-bottom:96px}
+body.con-sello .side{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+body.con-sello .toast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+@media (min-width:900px){body.con-sello .toast{bottom:96px}}
+body.con-sello .sheet{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -1567,6 +1576,10 @@ document.addEventListener('focusout',()=>hideTip());
 document.addEventListener('scroll',()=>hideTip(),true);
 let rzT,rzW=innerWidth<600;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(()=>{drawCharts();if((innerWidth<600)!==rzW){rzW=innerWidth<600;renderPeriodos();}},150);});
 const perCorto=p=>p==='prueba'?'Prueba oct.':MESES[+p.slice(5)-1].slice(0,3)+' '+p.slice(0,4);
+
+/* sello del plan gratis de Netlify */
+function chequearSello(){document.body.classList.toggle('con-sello',!!document.getElementById('nl-badge-frame'));}
+[800,2500,6000].forEach(t=>setTimeout(chequearSello,t));
 
 /* ---------- render y navegación ---------- */
 function renderBanner(){
