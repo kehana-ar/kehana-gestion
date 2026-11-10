@@ -33,9 +33,22 @@ $$;
 alter table public.docs     enable row level security;
 alter table public.miembros enable row level security;
 
+-- (lectura con política directa: así la sincronización en vivo avisa también las cargas nuevas)
 drop policy if exists docs_miembros on public.docs;
-create policy docs_miembros on public.docs for all to authenticated
-  using (public.es_miembro()) with check (public.es_miembro());
+drop policy if exists docs_leer on public.docs;
+drop policy if exists docs_escribir on public.docs;
+drop policy if exists docs_editar on public.docs;
+drop policy if exists docs_borrar on public.docs;
+create policy docs_leer on public.docs for select to authenticated
+  using (exists (select 1 from public.miembros m where m.user_id = auth.uid()));
+create policy docs_escribir on public.docs for insert to authenticated
+  with check (exists (select 1 from public.miembros m where m.user_id = auth.uid()));
+create policy docs_editar on public.docs for update to authenticated
+  using (exists (select 1 from public.miembros m where m.user_id = auth.uid()))
+  with check (exists (select 1 from public.miembros m where m.user_id = auth.uid()));
+create policy docs_borrar on public.docs for delete to authenticated
+  using (exists (select 1 from public.miembros m where m.user_id = auth.uid()));
+alter table public.docs replica identity full;
 
 drop policy if exists miembros_ver_propio on public.miembros;
 create policy miembros_ver_propio on public.miembros for select to authenticated
