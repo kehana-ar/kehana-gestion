@@ -343,6 +343,14 @@ body.con-sello .side{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))
 body.con-sello .toast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
 @media (min-width:900px){body.con-sello .toast{bottom:96px}}
 body.con-sello .sheet{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+/* campo de fecha con botón de calendario */
+.calw{position:relative;display:block;width:100%}
+.calw>input:not([type=date]){padding-right:52px}
+.calb{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:42px;height:38px;border-radius:7px;display:grid;place-items:center;color:var(--accent);cursor:pointer}
+.calb:hover{background:var(--accent-soft,rgba(31,61,43,.08))}
+.calb svg{width:20px;height:20px;pointer-events:none}
+.calb input[type=date]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0;margin:0;min-height:0;font-size:16px}
+.calb input[type=date]::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -1580,6 +1588,26 @@ const perCorto=p=>p==='prueba'?'Prueba oct.':MESES[+p.slice(5)-1].slice(0,3)+' '
 /* sello del plan gratis de Netlify */
 function chequearSello(){document.body.classList.toggle('con-sello',!!document.getElementById('nl-badge-frame'));}
 [800,2500,6000].forEach(t=>setTimeout(chequearSello,t));
+
+/* calendario en los campos de fecha: elige el día y lo escribe como dd/mm/aaaa en el mismo campo.
+   No cambia cómo se lee ni cómo se guarda la fecha (sigue pasando por parseFecha). */
+const CAL_SEL='input[placeholder^="dd/mm"],#pg-f';
+function ponerCalendario(inp){
+  if(inp.dataset.cal)return;inp.dataset.cal='1';
+  const w=document.createElement('span');w.className='calw';inp.parentNode.insertBefore(w,inp);w.appendChild(inp);
+  const b=document.createElement('span');b.className='calb';b.innerHTML=ico('ventas');
+  const d=document.createElement('input');d.type='date';d.tabIndex=-1;d.setAttribute('aria-label','Elegir la fecha en el calendario');d.title='Elegir en el calendario';
+  const sync=()=>{const v=parseFecha(inp.value);d.value=(v&&v!=='ERR')?v:todayISO();};
+  d.addEventListener('pointerdown',sync);d.addEventListener('focus',sync);
+  d.addEventListener('click',()=>{sync();try{d.showPicker();}catch(e){}});
+  d.addEventListener('input',ev=>ev.stopPropagation());
+  d.addEventListener('change',ev=>{ev.stopPropagation();if(!d.value)return;inp.value=fmtFecha(d.value);
+    inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));});
+  b.appendChild(d);w.appendChild(b);
+}
+function ponerCalendarios(root){(root||document).querySelectorAll(CAL_SEL).forEach(ponerCalendario);}
+new MutationObserver(()=>ponerCalendarios()).observe(document.body,{childList:true,subtree:true});
+ponerCalendarios();
 
 /* ---------- render y navegación ---------- */
 function renderBanner(){
